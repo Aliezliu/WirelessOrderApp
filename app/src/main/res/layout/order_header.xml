@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:background="@color/colorPrimaryDark"
+    android:orientation="horizontal">
+
+    <TextView
+        style="@style/orderHeader"
+        android:text="菜名"
+        android:textAlignment="center" />
+
+    <TextView
+        style="@style/orderHeader"
+        android:text="数量"
+        android:textAlignment="center" />
+
+    <TextView
+        style="@style/orderHeader"
+        android:text="价格"
+        android:textAlignment="center" />
+
+    <TextView
+        style="@style/orderHeader"
+        android:text="折扣"
+        android:textAlignment="center" />
+
+    <TextView
+        style="@style/orderHeader"
+        android:text="实价"
+        android:textAlignment="center" />
+
+    <TextView
+        style="@style/orderHeader"
+        android:text="订单状态"
+        android:textAlignment="center" />
+
+    <TextView
+        style="@style/orderHeader"
+        android:text="操作"
+        android:textAlignment="center" />
+</LinearLayout>

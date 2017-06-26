@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="280dp"
+    android:layout_height="320dp">
+
+    <ImageView
+        android:id="@+id/menu_item_ImageView"
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
+        android:src="@mipmap/ic_launcher"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textSize="22sp"
+            android:paddingLeft="20dp"
+            android:id="@+id/menu_item_name_TextView"
+            android:layout_alignParentLeft="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="水煮鱼"
+            android:textColor="#000000"/>
+
+        <TextView
+            android:layout_marginRight="20dp"
+            android:id="@+id/menu_item_add_TextView"
+            android:layout_alignParentRight="true"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:text="+"
+            android:textColor="#ffffff"
+            android:gravity="center"
+            android:background="@drawable/menu_item_choose_bg"/>
+    </RelativeLayout>
+
+
+    <TextView
+        android:paddingLeft="20dp"
+        android:id="@+id/menu_item_price_TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="价格:$30    折扣价:$24"/>
+</LinearLayout>

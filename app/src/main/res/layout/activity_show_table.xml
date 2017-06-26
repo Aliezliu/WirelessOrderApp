@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.softeem.orderapp.activity.ShowTableActivity">
+
+    <TextView
+        style="@style/topTitleTextView"
+        android:text="使用详情" />
+
+    <GridView
+        android:id="@+id/show_table_GridView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:horizontalSpacing="10dp"
+        android:numColumns="3"
+        android:verticalSpacing="20dp"></GridView>
+
+</LinearLayout>

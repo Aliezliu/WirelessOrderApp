@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/item1"
+        style="@style/orderItemText"
+        android:text="红烧肉"
+        android:textAlignment="center" />
+
+    <TextView
+        android:id="@+id/item2"
+        style="@style/orderItemText"
+        android:text="X 2"
+        android:textAlignment="center" />
+
+    <TextView
+        android:id="@+id/item3"
+        style="@style/orderItemText"
+        android:text="40"
+        android:textAlignment="center" />
+
+    <TextView
+        android:id="@+id/item4"
+        style="@style/orderItemText"
+        android:text="32"
+        android:textAlignment="center" />
+
+    <TextView
+        android:id="@+id/item5"
+        style="@style/orderItemText"
+        android:text="64"
+        android:textAlignment="center" />
+
+    <TextView
+        android:id="@+id/item6"
+        style="@style/orderItemText"
+        android:text="未下单"
+        android:textAlignment="center" />
+
+    <Button
+        android:id="@+id/item7"
+        style="@style/orderItemText"
+        android:gravity="center"
+        android:text="删除"
+        android:textAlignment="center" />
+</LinearLayout>

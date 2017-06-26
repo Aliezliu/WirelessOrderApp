@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/top_TextView"
+        style="@style/topTitleTextView"
+        android:text="点餐主页" />
+
+    <TextView
+        android:id="@+id/table_number_TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:height="80dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:text="当前桌号: 6"
+        android:textColor="@color/white" />
+
+    <GridView
+        android:id="@+id/main_menu_GridView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/top_TextView"
+        android:gravity="center"
+        android:horizontalSpacing="20dp"
+        android:numColumns="4"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="30dp"></GridView>
+</RelativeLayout>
