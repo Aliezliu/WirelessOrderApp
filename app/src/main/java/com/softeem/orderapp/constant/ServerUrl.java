@@ -17,13 +17,13 @@ public class ServerUrl {
     public static String GET_TYPE_BY_MENU_ID = SERVER_PATH + "/menuController/getTypeByMenuId.action?menuId=";
 
     // 提交订单的接口
-    public static String PUT_ORDER = SERVER_PATH + "/orderController/createOrder.action";
+    public static String PUT_ORDER = SERVER_PATH + "/CreateOrder";
 
     //更新桌子信息接口
     public static String UPDATE_TABLE_STATE = SERVER_PATH + "/tableController/updateTable.action";
 
     //获取所有桌子编号接口
-    public static String GET_ALL_TABLE = SERVER_PATH + "/tableController/listTable.action";
+    public static String GET_ALL_TABLE = SERVER_PATH + "/Tables";
     //获取所有桌子信息的接口
     public static String GET_ALL_TABLE_NUMBERS = SERVER_PATH + "/tableController//listTableNumbers.action";
 }

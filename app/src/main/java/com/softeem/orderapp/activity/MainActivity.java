@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             public void onClick(DialogInterface dialog, int which) {
 
                 int count = Integer.parseInt(personNumberTextView.getText().toString());
-                t.setPersonNumber(count);
+                t.setPersonNum(count);
 
                 //提交到服务器
                 Gson gson = new Gson();

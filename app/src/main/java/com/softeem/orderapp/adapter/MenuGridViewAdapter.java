@@ -7,10 +7,14 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.softeem.orderapp.MyApplication;
 import com.softeem.orderapp.R;
+import com.softeem.orderapp.activity.MenuActivity;
 import com.softeem.orderapp.bean.MenuBean;
+import com.softeem.orderapp.bean.OrderItemBean;
 
 import java.util.List;
 
@@ -26,6 +30,7 @@ public class MenuGridViewAdapter extends BaseAdapter {
     // inflater:创建View
     private LayoutInflater inflater;
 
+    private MenuBean menuBean;
     public MenuGridViewAdapter(List<MenuBean> data,LayoutInflater inflater,Context context){
         this.data = data;
         this.inflater = inflater;
@@ -56,7 +61,7 @@ public class MenuGridViewAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // 获取当前 Item 对应的数据
-        MenuBean menuBean = data.get(position);
+        menuBean = data.get(position);
 
         // 缓存: 减少 View 的创建和 findViewById 的操作
         ViewHolder holder;
@@ -82,7 +87,27 @@ public class MenuGridViewAdapter extends BaseAdapter {
         // 动态给定数据
         holder.nameTV.setText(menuBean.getName());
         holder.priceTV.setText("价格:" + menuBean.getPrice() + "    折扣价:" + (menuBean.getPrice()-menuBean.getDiscount()));
-       // holder.addTV.setOnClickListener(this);Ø
+        holder.addTV.setOnClickListener(new View.OnClickListener() {
+            MenuActivity activity = (MenuActivity)context;
+
+            @Override
+            public void onClick(View v) {
+                OrderItemBean i = new OrderItemBean();
+                i.menuBean = menuBean;
+                i.count = 1;
+                i.itemTotalPrice = menuBean.getPrice();
+                i.itemCutPrice = menuBean.getDiscount();
+                // 添加到临时订单中
+                MyApplication application = (MyApplication)activity.getApplication();
+                application.orderBean.orderItemBeanList.add(i);
+
+                int[] loc = new int[2];
+                v.getLocationInWindow(loc);
+
+                activity.playAnimation(loc);
+                Toast.makeText(context, "添加成功！", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         // ImageView加载网络图片
         Glide

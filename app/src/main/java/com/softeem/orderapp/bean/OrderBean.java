@@ -11,11 +11,14 @@ public class OrderBean {
     public int orderId;
     public double totalPrice;
     public double cutPrice;
-
-    public int tableNumber=1;  // 1
+    public int tableNumber = 1;  // 1
     public String orderTime;
 
     public List<OrderItemBean> orderItemBeanList = new ArrayList<OrderItemBean>();
+
+
+
+
 
     public int getOrderId() {
         return orderId;

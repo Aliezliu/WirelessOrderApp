@@ -18,6 +18,7 @@
         android:layout_weight="1"
         android:horizontalSpacing="10dp"
         android:numColumns="3"
-        android:verticalSpacing="20dp"></GridView>
+        android:verticalSpacing="20dp">
+    </GridView>
 
 </LinearLayout>

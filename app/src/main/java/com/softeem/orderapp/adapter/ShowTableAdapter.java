@@ -1,23 +1,15 @@
 package com.softeem.orderapp.adapter;
 
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.softeem.orderapp.R;
-import com.softeem.orderapp.activity.MainActivity;
 import com.softeem.orderapp.bean.TableBean;
-import com.softeem.orderapp.constant.ServerUrl;
-import com.softeem.orderapp.http.HttpCallback;
-import com.softeem.orderapp.http.HttpUtils;
 
 import java.util.List;
 
@@ -76,7 +68,7 @@ public class ShowTableAdapter extends BaseAdapter {
         }
 
         // 设置数据
-        holder.tableNumberTextView.setText(itemBean.getTableNumber() + "");
+        holder.tableNumberTextView.setText(itemBean.getId() + "");
         convertView.setBackgroundResource(itemBean.isStatus() ? R.drawable.table_selected : R.drawable.table_normal);
 
         convertView.setOnClickListener(new View.OnClickListener() {
@@ -98,10 +90,10 @@ public class ShowTableAdapter extends BaseAdapter {
         stateTV.setText(tableBean.isStatus() ? "使用状态: 正在使用":"使用状态: 空闲");
 
         TextView personTV = (TextView) view.findViewById(R.id.table_person_TextView);
-        personTV.setText("就餐人数: " + tableBean.getPersonNumber());
+        personTV.setText("就餐人数: " + tableBean.getPersonNum());
 
         TextView idTV = (TextView) view.findViewById(R.id.table_id_TextView);
-        idTV.setText("桌号: " + tableBean.getTableNumber());
+        idTV.setText("桌号: " + tableBean.getId());
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
 

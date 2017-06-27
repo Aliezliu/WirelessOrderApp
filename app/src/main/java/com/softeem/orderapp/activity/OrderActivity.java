@@ -15,6 +15,7 @@ import com.softeem.orderapp.MyApplication;
 import com.softeem.orderapp.R;
 import com.softeem.orderapp.adapter.OrderItemListAdapter;
 import com.softeem.orderapp.bean.OrderBean;
+import com.softeem.orderapp.bean.OrderBeanForJson;
 import com.softeem.orderapp.bean.OrderItemBean;
 import com.softeem.orderapp.constant.ServerUrl;
 import com.softeem.orderapp.http.HttpCallback;
@@ -101,7 +102,7 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
         df.format(cutPrice);
         df.format(realPrice);
         totalPriceTextView.setText("总价:" + String.valueOf(totalPrice));
-        cutPriceTextView.setText("优惠:   " + String.valueOf(cutPrice));
+        cutPriceTextView.setText("优惠:  " + String.valueOf(cutPrice));
         realPriceTextView.setText("实价:" + String.valueOf(realPrice));
     }
 
@@ -111,7 +112,7 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
             case R.id.put_order_Button:
                 //转换成 Json 文本
                 Gson gson = new Gson();
-                String json =  gson.toJson(orderBean);
+                String json =  gson.toJson(new OrderBeanForJson(orderBean));
                 for (OrderItemBean oib : orderItemBeanList) {
                     oib.setState("已下单");
                     adapter.notifyDataSetChanged();
@@ -142,7 +143,7 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
                 });
                 break;
             case R.id.add_order_Button:
-                startActivity(new Intent(OrderActivity.this, MenuDetailActivity.class));
+                startActivity(new Intent(OrderActivity.this, MenuActivity.class));
                 break;
             case R.id.pay_order_Button:
                 break;

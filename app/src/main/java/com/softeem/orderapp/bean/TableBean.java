@@ -6,37 +6,37 @@ package com.softeem.orderapp.bean;
 
 public class TableBean {
     // 桌子编号
-    private int tableId;
+    private int id;
     private int tableNumber;
 
     // 人数
-    private int personNumber;
+    private int personNum;
 
     // 状态
     private boolean status;
 
-    public int getTableId() {
-        return tableId;
+    public int getId() {
+        return id;
     }
 
-    public void setTableId(int tableId) {
-        this.tableId = tableId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getTableNumber() {
-        return tableNumber;
+        return id;
     }
 
     public void setTableNumber(int tableNumber) {
         this.tableNumber = tableNumber;
     }
 
-    public int getPersonNumber() {
-        return personNumber;
+    public int getPersonNum() {
+        return personNum;
     }
 
-    public void setPersonNumber(int personNumber) {
-        this.personNumber = personNumber;
+    public void setPersonNum(int personNum) {
+        this.personNum = personNum;
     }
 
     public boolean isStatus() {
@@ -50,9 +50,9 @@ public class TableBean {
     @Override
     public String toString() {
         return "TableBean{" +
-                "tableId=" + tableId +
+                "tableId=" + id +
                 ", tableNumber=" + tableNumber +
-                ", personNumber=" + personNumber +
+                //", personNumber=" + personNumber +
                 ", status='" + status + '\'' +
                 '}';
     }

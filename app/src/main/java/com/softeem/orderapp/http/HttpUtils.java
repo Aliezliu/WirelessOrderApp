@@ -1,11 +1,6 @@
 package com.softeem.orderapp.http;
 
-import android.util.Log;
-
-import com.google.gson.Gson;
-
 import java.io.IOException;
-import java.lang.reflect.Type;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -26,14 +21,14 @@ public class HttpUtils {
     // 提交数据:
     //url : 网址
     //json : 需要上传的 json 文本
-    //callback : 回调堆笑
+    //callback : 回调对象
     public void postData(String url, String json, final HttpCallback callback) {
         // 创建请求体
         RequestBody body = RequestBody.create(JSON, json);
         // 创建请求对象
         final Request request = new Request.Builder()
                 .url(url)
-                .post(body)
+                .put(body)
                 .build();
 
         new Thread() {
@@ -47,7 +42,6 @@ public class HttpUtils {
                         callback.onSuccess(response.body().string());
                     } else {
                         String message = "Unexpected code " + response;
-
                         callback.onFailure(message);
                     }
                 } catch (IOException e) {

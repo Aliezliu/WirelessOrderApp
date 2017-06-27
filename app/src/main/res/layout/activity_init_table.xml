@@ -21,14 +21,17 @@
         android:horizontalSpacing="10dp"
         android:numColumns="3"
         android:padding="10dp"
-        android:verticalSpacing="20dp"></GridView>
+        android:verticalSpacing="20dp">
+    </GridView>
 
     <Button
         android:id="@+id/ok_Button"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="70sp"
         android:layout_below="@id/table_GridView"
         android:text="确定"
         android:textAlignment="center"
-        android:textSize="18sp" />
+        android:background="@color/colorPrimary"
+        android:textColor="@color/white"
+        android:textSize="30sp" />
 </LinearLayout>

@@ -7,11 +7,13 @@ package com.softeem.orderapp.bean;
 public class OrderItemBean {
     public String state = "未下单";
     public int count;
-
     public double itemTotalPrice;
     public double itemCutPrice;
-
     public MenuBean menuBean;
+
+
+
+
 
     public String getState() {
         return state;
