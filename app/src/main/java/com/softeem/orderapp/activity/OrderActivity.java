@@ -3,6 +3,7 @@ package com.softeem.orderapp.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -113,6 +114,7 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
                 //转换成 Json 文本
                 Gson gson = new Gson();
                 String json =  gson.toJson(new OrderBeanForJson(orderBean));
+                Log.d("jsonString",json);
                 for (OrderItemBean oib : orderItemBeanList) {
                     oib.setState("已下单");
                     adapter.notifyDataSetChanged();

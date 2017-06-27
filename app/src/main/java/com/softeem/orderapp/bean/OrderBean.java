@@ -12,7 +12,7 @@ public class OrderBean {
     public double totalPrice;
     public double cutPrice;
     public int tableNumber = 1;  // 1
-    public String orderTime;
+    public String orderTime = "201706271646";
 
     public List<OrderItemBean> orderItemBeanList = new ArrayList<OrderItemBean>();
 
