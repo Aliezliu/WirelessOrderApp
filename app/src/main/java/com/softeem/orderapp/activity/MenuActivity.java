@@ -5,13 +5,14 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.SparseArray;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.LinearInterpolator;
@@ -21,27 +22,46 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.flipboard.bottomsheet.BottomSheetLayout;
 import com.softeem.orderapp.R;
 import com.softeem.orderapp.adapter.MenuGridViewAdapter;
+import com.softeem.orderapp.adapter.SelectAdapter;
 import com.softeem.orderapp.bean.MenuBean;
+import com.softeem.orderapp.bean.OrderItemBean;
 import com.softeem.orderapp.bean.TypeBean;
 import com.softeem.orderapp.http.HttpCallback;
 import com.softeem.orderapp.http.MenuHttpUtils;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
+
+
+
 // 点菜页面
-public class MenuActivity extends AppCompatActivity {
+public class MenuActivity extends AppCompatActivity implements View.OnClickListener{
     private LinearLayout topTypeLinearLayout;
     private GridView menuGridView;
     private ViewGroup anim_mask_layout;
-    private MenuGridViewAdapter menuGridViewAdapter;
+
     private List<TypeBean> typeList;
     private List<MenuBean> menuList = new ArrayList<MenuBean>();
+    private SparseArray<OrderItemBean> selectedList;
     private ImageView imgCart;
     private Handler mHanlder;
+    private TextView tvCount, tvCost, tvSubmit;
+    private RecyclerView rvSelected;
+    private BottomSheetLayout bottomSheetLayout;
+    private View bottomSheet;
+    private StickyListHeadersListView listView;
+
+    private NumberFormat nf;
+    private MenuGridViewAdapter menuGridViewAdapter;
+    private SelectAdapter selectAdapter;
     private HttpCallback typeCallBack;
     private MenuCallBack menuCallBack;
 
@@ -49,18 +69,24 @@ public class MenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-
+        nf = NumberFormat.getCurrencyInstance();
+        nf.setMaximumFractionDigits(1);
+        selectedList = new SparseArray<>();
         // 先联网获取菜谱类型
         typeCallBack = new TypeCallBack();
         new MenuHttpUtils().getAllTypes(typeCallBack);
         anim_mask_layout = (LinearLayout) findViewById(R.id.containerLayout);
+        bottomSheetLayout = (BottomSheetLayout) findViewById(R.id.bottomSheetLayout);
         // 设置适配器
         menuGridView = (GridView) findViewById(R.id.menu_GridView);
         menuGridViewAdapter = new MenuGridViewAdapter(menuList, LayoutInflater.from(this), this);
         menuGridView.setAdapter(menuGridViewAdapter);
         imgCart = (ImageView)findViewById(R.id.imgCart);
+        tvCount = (TextView) findViewById(R.id.tvCount);
+        tvCost = (TextView) findViewById(R.id.tvCost);
+        tvSubmit  = (TextView) findViewById(R.id.tvSubmit);
         mHanlder = new Handler(getMainLooper());
-        // TODO 给 gridView 添加条目点击事件
+
         menuGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -82,70 +108,215 @@ public class MenuActivity extends AppCompatActivity {
         new MenuHttpUtils().getAllMenu(menuCallBack);
     }
 
+    //添加商品
+    public void add(OrderItemBean item,boolean refreshGoodList){
+        /*int groupCount = groupSelect.get(item.typeId);
+        if(groupCount==0){
+            groupSelect.append(item.typeId,1);
+        }else{
+            groupSelect.append(item.typeId,++groupCount);
+        }*/
+        OrderItemBean temp = selectedList.get(item.menuBean.getId());
+        if(temp == null){
+            item.count = 1;
+            selectedList.append(item.menuBean.getId(), item);
+        }else{
+            temp.count++;
+            temp.itemTotalPrice += temp.menuBean.getPrice();
+            temp.itemCutPrice += temp.menuBean.getDiscount();
+        }
+        update(refreshGoodList);
+    }
+    //移除商品
+    public void remove(OrderItemBean item,boolean refreshGoodList){
+        /*int groupCount = groupSelect.get(item.typeId);
+        if(groupCount==1){
+            groupSelect.delete(item.typeId);
+        }else if(groupCount>1){
+            groupSelect.append(item.typeId,--groupCount);
+        }*/
+        OrderItemBean temp = selectedList.get(item.menuBean.getId());
+        if(temp != null){
+            if(temp.count < 2){
+                selectedList.remove(item.menuBean.getId());
+            }else{
+                item.count--;
+                item.itemTotalPrice -= item.menuBean.getPrice();
+                item.itemCutPrice -= item.menuBean.getDiscount();
+            }
+        }
+        update(refreshGoodList);
+    }
+
+    //刷新布局 总价、购买数量等
+    private void update(boolean refreshGoodList){
+        int size = selectedList.size();
+        int count = 0;
+        double cost = 0;
+        for(int i = 0; i < size; i++){
+            OrderItemBean item = selectedList.valueAt(i);
+            count += item.count;
+            cost += item.getItemTotalPrice();
+        }
+
+        if(count < 1){
+            tvCount.setVisibility(View.GONE);
+        }else{
+            tvCount.setVisibility(View.VISIBLE);
+        }
+
+        tvCount.setText(String.valueOf(count));
+
+        if(cost > 0){
+            tvSubmit.setVisibility(View.VISIBLE);
+        }else{
+            tvSubmit.setVisibility(View.GONE);
+        }
+
+        tvCost.setText(nf.format(cost));
+
+        /*if(myAdapter!=null && refreshGoodList){
+            myAdapter.notifyDataSetChanged();
+        }*/
+        if(selectAdapter!=null){
+            selectAdapter.notifyDataSetChanged();
+        }
+        /*if(typeAdapter!=null){
+            typeAdapter.notifyDataSetChanged();
+        }*/
+        if(bottomSheetLayout.isSheetShowing() && selectedList.size() < 1){
+            bottomSheetLayout.dismissSheet();
+        }
+    }
+    //清空购物车
+    public void clearCart(){
+        selectedList.clear();
+        //groupSelect.clear();
+        update(true);
+    }
+
+    @Override
+    public void onClick(View v){
+        switch (v.getId()){
+            case R.id.bottom:
+                showBottomSheet();
+                break;
+            case R.id.clear:
+                clearCart();
+                break;
+            case R.id.tvSubmit:
+                Toast.makeText(MenuActivity.this, "结算", Toast.LENGTH_SHORT).show();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private View createBottomSheetView(){
+        View view = LayoutInflater.from(this).inflate(R.layout.layout_bottom_sheet,(ViewGroup) getWindow().getDecorView(),false);
+        rvSelected = (RecyclerView) view.findViewById(R.id.selectRecyclerView);
+        rvSelected.setLayoutManager(new LinearLayoutManager(this));
+        TextView clear = (TextView) view.findViewById(R.id.clear);
+        clear.setOnClickListener(this);
+        selectAdapter = new SelectAdapter(this, selectedList);
+        rvSelected.setAdapter(selectAdapter);
+        return view;
+    }
+
+    private void showBottomSheet(){
+        if(bottomSheet==null){
+            bottomSheet = createBottomSheetView();
+        }
+        if(bottomSheetLayout.isSheetShowing()){
+            bottomSheetLayout.dismissSheet();
+        }else {
+            if(selectedList.size() != 0){
+                bottomSheetLayout.showWithSheetView(bottomSheet);
+            }
+        }
+    }
 
     public void playAnimation(int[] start_location){
         ImageView img = new ImageView(this);
-        img.setImageResource(R.drawable.button_add);
+        img.setImageResource(R.drawable.ball);
         setAnim(img,start_location);
     }
 
-    private void addViewToAnimLayout(final ViewGroup vg, final View view,
+    private View addViewToAnimLayout(final ViewGroup parent, final View view,
                                      int[] location) {
-
         int x = location[0];
         int y = location[1];
-        int[] loc = new int[2];
-        vg.getLocationInWindow(loc);
-        view.setX(x);
-        view.setY(y-loc[1]);
-        vg.addView(view);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        lp.leftMargin = x;
+        lp.topMargin = y;
+        view.setLayoutParams(lp);
+        return view;
     }
 
-    private Animation createAnim(int startX,int startY){
-        int[] des = new int[2];
-        imgCart.getLocationInWindow(des);
+    private ViewGroup createAnimLayout() {
+        ViewGroup rootView = (ViewGroup) this.getWindow().getDecorView();
+        LinearLayout animLayout = new LinearLayout(this);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        animLayout.setLayoutParams(lp);
+        animLayout.setId(Integer.MAX_VALUE-1);
+        animLayout.setBackgroundResource(android.R.color.transparent);
+        rootView.addView(animLayout);
+        return animLayout;
+    }
+
+    public void setAnim(final View v, int[] startLocation) {
+        anim_mask_layout = null;
+        anim_mask_layout = createAnimLayout();
+        anim_mask_layout.addView(v);//把动画小球添加到动画层
+        final View view = addViewToAnimLayout(anim_mask_layout, v,
+                startLocation);
+        int[] endLocation = new int[2];// 存储动画结束位置的X、Y坐标
+        imgCart.getLocationInWindow(endLocation);
+
+        // 计算位移
+        int endX = 0 - startLocation[0] + 40;// 动画位移的X坐标
+        int endY = endLocation[1] - startLocation[1];// 动画位移的y坐标
+        TranslateAnimation translateAnimationX = new TranslateAnimation(0,
+                endX, 0, 0);
+        translateAnimationX.setInterpolator(new LinearInterpolator());
+        translateAnimationX.setRepeatCount(0);// 动画重复执行的次数
+        translateAnimationX.setFillAfter(true);
+
+        TranslateAnimation translateAnimationY = new TranslateAnimation(0, 0,
+                0, endY);
+        translateAnimationY.setInterpolator(new AccelerateInterpolator());
+        translateAnimationY.setRepeatCount(0);// 动画重复执行的次数
+        translateAnimationX.setFillAfter(true);
 
         AnimationSet set = new AnimationSet(false);
-
-        Animation translationX = new TranslateAnimation(0, des[0]-startX, 0, 0);
-        translationX.setInterpolator(new LinearInterpolator());
-        Animation translationY = new TranslateAnimation(0, 0, 0, des[1]-startY);
-        translationY.setInterpolator(new AccelerateInterpolator());
-        Animation alpha = new AlphaAnimation(1,0.5f);
-        set.addAnimation(translationX);
-        set.addAnimation(translationY);
-        set.addAnimation(alpha);
-        set.setDuration(500);
-
-        return set;
-    }
-
-    private void setAnim(final View v, int[] start_location) {
-
-        addViewToAnimLayout(anim_mask_layout, v, start_location);
-        Animation set = createAnim(start_location[0],start_location[1]);
+        set.setFillAfter(false);
+        set.addAnimation(translateAnimationY);
+        set.addAnimation(translateAnimationX);
+        set.setDuration(400);// 动画的执行时间
+        view.startAnimation(set);
+        // 动画监听事件
         set.setAnimationListener(new Animation.AnimationListener() {
+            // 动画的开始
             @Override
             public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(final Animation animation) {
-                mHanlder.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        anim_mask_layout.removeView(v);
-                    }
-                },100);
+                v.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onAnimationRepeat(Animation animation) {
 
             }
+
+            // 动画的结束
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                v.setVisibility(View.GONE);
+            }
         });
-        v.startAnimation(set);
     }
 
     // 初始化类型
@@ -213,8 +384,6 @@ public class MenuActivity extends AppCompatActivity {
         public void onSuccess(Object data) {
             // 修改集合的数据
             menuList = (List<MenuBean>) data;
-
-            Log.i("menuList", menuList.toString());
             // menuGridViewAdapter 是适配器,动态显示所有的菜单
             menuGridViewAdapter.setData(menuList);
             //刷新适配器
@@ -244,6 +413,7 @@ public class MenuActivity extends AppCompatActivity {
                 public void run() {
 
                     typeList = (List<TypeBean>) data;
+
                     initTopTypes();
                 }
             });

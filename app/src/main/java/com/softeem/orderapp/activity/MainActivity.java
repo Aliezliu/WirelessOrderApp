@@ -200,7 +200,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 // 进入点餐页面
                 i = new Intent(MainActivity.this, MenuActivity.class);
                 break;
-
             case 1:
             case 2:
                 i = new Intent(MainActivity.this, OrderActivity.class);
@@ -208,6 +207,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
             case 3:
                 i = new Intent(MainActivity.this, ShowTableActivity.class);
+                break;
+            case 5:
+                i = new Intent(MainActivity.this, DetailActivity.class);
+                break;
+            case 6:
+                i = new Intent(MainActivity.this, LoginActivity.class);
                 break;
         }
 

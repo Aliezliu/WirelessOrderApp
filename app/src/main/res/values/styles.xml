@@ -6,8 +6,13 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="stickyListHeadersListViewStyle">@style/Widget.MyApp.ListView</item>
     </style>
 
+    <style name="Widget.MyApp.ListView" parent="@android:style/Widget.ListView">
+        <item name="android:paddingLeft">@dimen/vertical_padding</item>
+        <item name="android:paddingRight">@dimen/vertical_padding</item>
+    </style>
 
     <style name="radioButton">
         <item name="android:layout_width">100dp</item>

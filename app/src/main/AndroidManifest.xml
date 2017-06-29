@@ -17,6 +17,8 @@
         <activity android:name=".activity.MenuActivity" />
         <activity android:name=".activity.MenuDetailActivity" />
         <activity android:name=".activity.OrderActivity" />
+        <activity android:name=".activity.DetailActivity"/>
+        <activity android:name=".activity.LoginActivity"/>
         <activity android:name=".activity.InitTableActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

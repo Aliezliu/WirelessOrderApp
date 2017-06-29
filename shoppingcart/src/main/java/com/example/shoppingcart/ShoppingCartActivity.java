@@ -224,7 +224,7 @@ public class ShoppingCartActivity extends AppCompatActivity implements View.OnCl
     //刷新布局 总价、购买数量等
     private void update(boolean refreshGoodList){
         int size = selectedList.size();
-        int count =0;
+        int count = 0;
         double cost = 0;
         for(int i=0;i<size;i++){
             GoodsItem item = selectedList.valueAt(i);

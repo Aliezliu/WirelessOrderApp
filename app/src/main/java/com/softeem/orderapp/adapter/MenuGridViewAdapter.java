@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.softeem.orderapp.MyApplication;
@@ -89,7 +88,6 @@ public class MenuGridViewAdapter extends BaseAdapter {
         holder.priceTV.setText("价格:" + menuBean.getPrice() + "    折扣价:" + (menuBean.getPrice()-menuBean.getDiscount()));
         holder.addTV.setOnClickListener(new View.OnClickListener() {
             MenuActivity activity = (MenuActivity)context;
-
             @Override
             public void onClick(View v) {
                 OrderItemBean i = new OrderItemBean();
@@ -98,14 +96,30 @@ public class MenuGridViewAdapter extends BaseAdapter {
                 i.itemTotalPrice = menuBean.getPrice();
                 i.itemCutPrice = menuBean.getDiscount();
                 // 添加到临时订单中
-                MyApplication application = (MyApplication)activity.getApplication();
-                application.orderBean.orderItemBeanList.add(i);
-
+                MyApplication application = (MyApplication) activity.getApplication();
+                List<OrderItemBean> list = application.orderBean.orderItemBeanList;
+                boolean flag = true;
+                for (OrderItemBean oib : list) {
+                    if (oib.menuBean.getId() == i.menuBean.getId()) {
+                        oib.count += i.count;
+                        oib.itemTotalPrice += i.itemTotalPrice;
+                        oib.itemCutPrice += i.itemCutPrice;
+                        flag = false;
+                    }
+                }
+                if(flag)
+                    application.orderBean.orderItemBeanList.add(i);
+                activity.add(i, false);
+                /*TextView tvCount = (TextView)activity.findViewById(R.id.tvCount);
+                int count = Integer.valueOf(tvCount.getText().toString());
+                count++;
+                tvCount.setVisibility(View.VISIBLE);
+                tvCount.setText(String.valueOf(count));*/
                 int[] loc = new int[2];
                 v.getLocationInWindow(loc);
 
                 activity.playAnimation(loc);
-                Toast.makeText(context, "添加成功！", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context, "添加成功！", Toast.LENGTH_SHORT).show();
             }
         });
 

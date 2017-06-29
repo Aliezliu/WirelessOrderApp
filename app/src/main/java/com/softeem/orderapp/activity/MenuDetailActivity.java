@@ -17,6 +17,8 @@ import com.softeem.orderapp.bean.TypeBean;
 import com.softeem.orderapp.http.HttpCallback;
 import com.softeem.orderapp.http.MenuHttpUtils;
 
+import java.util.List;
+
 public class MenuDetailActivity extends AppCompatActivity {
     private TextView menuNameTextView;
     private ImageView detailPicImageView;
@@ -91,25 +93,37 @@ public class MenuDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // 添加订单:
                 //(1)封装 OrderItem
-                OrderItemBean i = new OrderItemBean();
-                i.menuBean = menuBean;
-
-                int count = Integer.parseInt(countTextView.getText().toString());
-                i.count = count;
-
-                i.itemTotalPrice = count * menuBean.getPrice();
-                i.itemCutPrice = count * menuBean.getDiscount();
-
-                // 添加到临时订单中
-                MyApplication application = (MyApplication) getApplication();
-                application.orderBean.orderItemBeanList.add(i);
-
+                addOrderItem(menuBean);
                 Toast.makeText(MenuDetailActivity.this, "加入成功", Toast.LENGTH_SHORT).show();
 
                 //关闭当前 Activity
                 MenuDetailActivity.this.finish();
             }
         });
+    }
+
+    public void addOrderItem(MenuBean menuBean) {
+        OrderItemBean i = new OrderItemBean();
+        i.menuBean = menuBean;
+        int count = Integer.parseInt(countTextView.getText().toString());
+        i.count = count;
+        i.itemTotalPrice = count * menuBean.getPrice();
+        i.itemCutPrice = count * menuBean.getDiscount();
+
+        // 添加到临时订单中
+        MyApplication application = (MyApplication) getApplication();
+        List<OrderItemBean> list = application.orderBean.orderItemBeanList;
+        boolean flag = true;
+        for (OrderItemBean oib : list) {
+            if (oib.menuBean.getId() == i.menuBean.getId()) {
+                oib.count += i.count;
+                oib.itemTotalPrice += i.itemTotalPrice;
+                oib.itemCutPrice += i.itemCutPrice;
+                flag = false;
+            }
+        }
+        if(flag)
+            application.orderBean.orderItemBeanList.add(i);
     }
 
     private void initData() {

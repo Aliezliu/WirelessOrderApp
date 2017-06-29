@@ -8,12 +8,11 @@ public class TableBean {
     // 桌子编号
     private int id;
     private int tableNumber;
-
     // 人数
     private int personNum;
-
     // 状态
     private boolean status;
+
 
     public int getId() {
         return id;

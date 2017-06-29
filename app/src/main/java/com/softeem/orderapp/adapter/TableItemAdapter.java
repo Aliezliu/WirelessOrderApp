@@ -5,11 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.softeem.orderapp.R;
-import com.softeem.orderapp.bean.OrderItemBean;
 
 import java.util.List;
 
@@ -56,7 +54,6 @@ public class TableItemAdapter extends BaseAdapter {
         ViewHolder holder;
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.table_item, null);
-
             holder = new ViewHolder();
             holder.tableNumberTextView = (TextView) convertView.findViewById(R.id.table_number_TextView);
 
