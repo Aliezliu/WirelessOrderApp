@@ -63,6 +63,7 @@ public class MenuHttpUtils {
                     // 执行网络操作
                     response = client.newCall(request).execute();
 
+
                     if (response.isSuccessful()) {
                         // 获取响应文本
                         String json = response.body().string();
@@ -77,7 +78,6 @@ public class MenuHttpUtils {
                         callback.onSuccess(data);
                     } else {
                         String message ="Unexpected code " + response;
-
                         callback.onFailure(message);
                     }
                 } catch (IOException e) {

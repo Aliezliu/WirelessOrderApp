@@ -26,4 +26,6 @@ public class ServerUrl {
     public static String GET_ALL_TABLE = SERVER_PATH + "/Tables";
     //获取所有桌子信息的接口
     public static String GET_ALL_TABLE_NUMBERS = SERVER_PATH + "/tableController//listTableNumbers.action";
+
+    public static String GET_Check_BY_OrderID = SERVER_PATH + "/Check?orderId=";
 }

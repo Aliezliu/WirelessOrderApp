@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             return;
         }
         //设置对应的桌子编号
-        t.setTableNumber(tableNumber);
+        t.setId(tableNumber);
         topTableNumberTextView.setText("当前桌号: " + tableNumber);
 
 
@@ -207,6 +207,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
             case 3:
                 i = new Intent(MainActivity.this, ShowTableActivity.class);
+                break;
+            case 4:
+                i = new Intent(MainActivity.this, PayActivity.class);
                 break;
             case 5:
                 i = new Intent(MainActivity.this, DetailActivity.class);

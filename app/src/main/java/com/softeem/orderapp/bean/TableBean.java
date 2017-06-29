@@ -7,12 +7,18 @@ package com.softeem.orderapp.bean;
 public class TableBean {
     // 桌子编号
     private int id;
-    private int tableNumber;
-    // 人数
+
     private int personNum;
-    // 状态
+
+    private boolean isSmoke;
+
+    private String shape;
+
     private boolean status;
 
+    private int site;
+
+    private String remark;
 
     public int getId() {
         return id;
@@ -20,14 +26,6 @@ public class TableBean {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getTableNumber() {
-        return id;
-    }
-
-    public void setTableNumber(int tableNumber) {
-        this.tableNumber = tableNumber;
     }
 
     public int getPersonNum() {
@@ -38,6 +36,22 @@ public class TableBean {
         this.personNum = personNum;
     }
 
+    public boolean isSmoke() {
+        return isSmoke;
+    }
+
+    public void setSmoke(boolean smoke) {
+        isSmoke = smoke;
+    }
+
+    public String getShape() {
+        return shape;
+    }
+
+    public void setShape(String shape) {
+        this.shape = shape;
+    }
+
     public boolean isStatus() {
         return status;
     }
@@ -46,13 +60,32 @@ public class TableBean {
         this.status = status;
     }
 
+    public int getSite() {
+        return site;
+    }
+
+    public void setSite(int site) {
+        this.site = site;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
     @Override
     public String toString() {
         return "TableBean{" +
-                "tableId=" + id +
-                ", tableNumber=" + tableNumber +
-                //", personNumber=" + personNumber +
-                ", status='" + status + '\'' +
+                "id=" + id +
+                ", personNum=" + personNum +
+                ", isSmoke=" + isSmoke +
+                ", shape=" + shape + '\'' +
+                ",status="+status+
+                ",site="+site+
+                ",remark"+remark+
                 '}';
     }
 }

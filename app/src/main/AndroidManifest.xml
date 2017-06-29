@@ -19,6 +19,8 @@
         <activity android:name=".activity.OrderActivity" />
         <activity android:name=".activity.DetailActivity"/>
         <activity android:name=".activity.LoginActivity"/>
+        <activity android:name=".activity.PayActivity"/>
+        <activity android:name=".activity.ViewOrderDetailActivity"/>
         <activity android:name=".activity.InitTableActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -5,41 +5,16 @@
     android:orientation="vertical">
 
     <TextView
-        android:layout_width="match_parent"
+        android:id="@+id/tableMessage"
+        android:text=""
+        android:layout_margin="10dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimaryDark"
-        android:padding="10dp"
-        android:text="使用详情"
+        android:layout_gravity="center"
+        android:gravity="center"
         android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="30sp" />
-
-    <TextView
-        android:id="@+id/table_state_TextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="10dp"
-        android:text="状态: 正在使用"
-        android:textSize="25sp" />
-
-    <TextView
-        android:id="@+id/table_id_TextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="桌号: 8"
-        android:textSize="25sp" />
-
-    <TextView
-        android:id="@+id/table_person_TextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="10dp"
-        android:text="就餐人数: 10"
-        android:textSize="25sp" />
-
+        android:textStyle="normal"
+        android:textSize="24sp"/>
     <TextView
         android:id="@+id/close_TextView"
         android:layout_width="16dp"
@@ -47,7 +22,7 @@
         android:layout_gravity="center"
         android:background="@drawable/close_bg"
         android:gravity="center"
-        android:text="X"
+        android:text=""
         android:layout_margin="10dp"
         android:textAlignment="center"
         android:textColor="@color/black"

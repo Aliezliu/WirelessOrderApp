@@ -23,6 +23,7 @@ public class ShowTableAdapter extends BaseAdapter {
     private Context context;
     private LayoutInflater inflater;
     private AlertDialog dialog;
+    private TextView tableMessage;
 
     public ShowTableAdapter(List<TableBean> data, Context context) {
         this.data = data;
@@ -82,19 +83,22 @@ public class ShowTableAdapter extends BaseAdapter {
         return convertView;
     }
 
+    private String getShownMessage(TableBean tableBena)
+    {
+        return "餐桌状态："+(tableBena.isStatus()==true?"有人":"无人")+"\n"
+                +"座位数量："+tableBena.getPersonNum()+"\n"
+                +"可否抽烟："+(tableBena.isSmoke()==true?"可以":"不可以")+"\n"
+                +"餐桌形状："+tableBena.getShape()+"\n"
+                +"餐桌餐牌："+tableBena.getSite()+"\n"
+                +"备注信息："+(tableBena.getRemark()==null?"无备注":tableBena.getRemark());
+    }
+
     public void showDialog(TableBean tableBean) {
         //显示对话框
         //创建 View
         View view = LayoutInflater.from(context).inflate(R.layout.show_table_item, null);
-      TextView stateTV = (TextView) view.findViewById(R.id.table_state_TextView);
-        stateTV.setText(tableBean.isStatus() ? "使用状态: 正在使用":"使用状态: 空闲");
-
-        TextView personTV = (TextView) view.findViewById(R.id.table_person_TextView);
-        personTV.setText("就餐人数: " + tableBean.getPersonNum());
-
-        TextView idTV = (TextView) view.findViewById(R.id.table_id_TextView);
-        idTV.setText("桌号: " + tableBean.getId());
-
+        tableMessage = (TextView)view.findViewById(R.id.tableMessage);
+        tableMessage.setText(getShownMessage(tableBean));
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
         view.findViewById(R.id.close_TextView).setOnClickListener(new View.OnClickListener() {
