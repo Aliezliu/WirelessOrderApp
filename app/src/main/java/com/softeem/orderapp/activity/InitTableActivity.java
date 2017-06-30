@@ -16,6 +16,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.softeem.orderapp.R;
 import com.softeem.orderapp.adapter.TableItemAdapter;
+import com.softeem.orderapp.bean.TableBean;
 import com.softeem.orderapp.constant.ServerUrl;
 import com.softeem.orderapp.http.HttpCallback;
 import com.softeem.orderapp.http.HttpUtils;
@@ -28,7 +29,7 @@ import java.util.List;
 public class InitTableActivity extends AppCompatActivity {
     private Button okButton;
     private GridView tableGridView;
-    private List<Integer> tableList;
+    private List<TableBean> tableList;
     private int tableNumber;
     private TableItemAdapter adapter;
 
@@ -71,7 +72,7 @@ public class InitTableActivity extends AppCompatActivity {
     }
 
     private void initData() {
-        tableList = new ArrayList<Integer>();
+        tableList = new ArrayList<TableBean>();
 
         adapter = new TableItemAdapter(tableList, InitTableActivity.this);
         tableGridView.setAdapter(adapter);
@@ -99,7 +100,7 @@ public class InitTableActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Object data) {
                 Gson gson = new Gson();
-                Type t = new TypeToken<List<Integer>>(){}.getType();
+                Type t = new TypeToken<List<TableBean>>(){}.getType();
                 tableList = gson.fromJson(data.toString(),t);
 
                 Log.d("tableList",tableList.toString());

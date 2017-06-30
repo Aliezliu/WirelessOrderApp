@@ -83,14 +83,14 @@ public class ShowTableAdapter extends BaseAdapter {
         return convertView;
     }
 
-    private String getShownMessage(TableBean tableBena)
+    private String getShownMessage(TableBean tableBean)
     {
-        return "餐桌状态："+(tableBena.isStatus()==true?"有人":"无人")+"\n"
-                +"座位数量："+tableBena.getPersonNum()+"\n"
-                +"可否抽烟："+(tableBena.isSmoke()==true?"可以":"不可以")+"\n"
-                +"餐桌形状："+tableBena.getShape()+"\n"
-                +"餐桌餐牌："+tableBena.getSite()+"\n"
-                +"备注信息："+(tableBena.getRemark()==null?"无备注":tableBena.getRemark());
+        return "餐桌状态："+(tableBean.isStatus()==true?"有人":"无人")+"\n"
+                +"座位数量："+tableBean.getPersonNum()+"\n"
+                +"可否抽烟："+(tableBean.isSmoke()==true?"可以":"不可以")+"\n"
+                +"餐桌形状："+tableBean.getShape()+"\n"
+                +"餐桌餐牌："+tableBean.getSite()+"\n"
+                +"备注信息："+(tableBean.getRemark()==null?"无备注":tableBean.getRemark());
     }
 
     public void showDialog(TableBean tableBean) {

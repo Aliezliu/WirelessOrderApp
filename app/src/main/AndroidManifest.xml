@@ -20,6 +20,8 @@
         <activity android:name=".activity.DetailActivity"/>
         <activity android:name=".activity.LoginActivity"/>
         <activity android:name=".activity.PayActivity"/>
+        <activity android:name=".activity.SwitchActivity"/>
+        <activity android:name=".activity.SettingActivity"/>
         <activity android:name=".activity.ViewOrderDetailActivity"/>
         <activity android:name=".activity.InitTableActivity">
             <intent-filter>

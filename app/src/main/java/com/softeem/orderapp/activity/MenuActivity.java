@@ -22,9 +22,9 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.flipboard.bottomsheet.BottomSheetLayout;
+import com.softeem.orderapp.MyApplication;
 import com.softeem.orderapp.R;
 import com.softeem.orderapp.adapter.MenuGridViewAdapter;
 import com.softeem.orderapp.adapter.SelectAdapter;
@@ -37,9 +37,6 @@ import com.softeem.orderapp.http.MenuHttpUtils;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
-
-import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
-
 
 
 // 点菜页面
@@ -57,7 +54,6 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
     private RecyclerView rvSelected;
     private BottomSheetLayout bottomSheetLayout;
     private View bottomSheet;
-    private StickyListHeadersListView listView;
 
     private NumberFormat nf;
     private MenuGridViewAdapter menuGridViewAdapter;
@@ -95,13 +91,14 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
 
                 //当前条目对应的数据
                 MenuBean m = menuList.get(position);
+
                 //携带数据到 MenuDetailActivity
                 i.putExtra("menuBean", m);
-
                 startActivity(i);
+                //Intent it = new Intent(MenuActivity.this, MenuDetailActivity.class);
+                //startActivityForResult(i, 1);
             }
         });
-
 
         //加载菜谱
         menuCallBack = new MenuCallBack();
@@ -109,13 +106,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     //添加商品
-    public void add(OrderItemBean item,boolean refreshGoodList){
-        /*int groupCount = groupSelect.get(item.typeId);
-        if(groupCount==0){
-            groupSelect.append(item.typeId,1);
-        }else{
-            groupSelect.append(item.typeId,++groupCount);
-        }*/
+    public void add(OrderItemBean item){
         OrderItemBean temp = selectedList.get(item.menuBean.getId());
         if(temp == null){
             item.count = 1;
@@ -125,16 +116,10 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
             temp.itemTotalPrice += temp.menuBean.getPrice();
             temp.itemCutPrice += temp.menuBean.getDiscount();
         }
-        update(refreshGoodList);
+        update();
     }
     //移除商品
-    public void remove(OrderItemBean item,boolean refreshGoodList){
-        /*int groupCount = groupSelect.get(item.typeId);
-        if(groupCount==1){
-            groupSelect.delete(item.typeId);
-        }else if(groupCount>1){
-            groupSelect.append(item.typeId,--groupCount);
-        }*/
+    public void remove(OrderItemBean item){
         OrderItemBean temp = selectedList.get(item.menuBean.getId());
         if(temp != null){
             if(temp.count < 2){
@@ -145,20 +130,19 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
                 item.itemCutPrice -= item.menuBean.getDiscount();
             }
         }
-        update(refreshGoodList);
+        update();
     }
 
     //刷新布局 总价、购买数量等
-    private void update(boolean refreshGoodList){
+    private void update(){
         int size = selectedList.size();
         int count = 0;
         double cost = 0;
         for(int i = 0; i < size; i++){
             OrderItemBean item = selectedList.valueAt(i);
             count += item.count;
-            cost += item.getItemTotalPrice();
+            cost += item.getItemTotalPrice()-item.getItemCutPrice();
         }
-
         if(count < 1){
             tvCount.setVisibility(View.GONE);
         }else{
@@ -172,18 +156,10 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         }else{
             tvSubmit.setVisibility(View.GONE);
         }
-
         tvCost.setText(nf.format(cost));
-
-        /*if(myAdapter!=null && refreshGoodList){
-            myAdapter.notifyDataSetChanged();
-        }*/
-        if(selectAdapter!=null){
+        if(selectAdapter != null){
             selectAdapter.notifyDataSetChanged();
         }
-        /*if(typeAdapter!=null){
-            typeAdapter.notifyDataSetChanged();
-        }*/
         if(bottomSheetLayout.isSheetShowing() && selectedList.size() < 1){
             bottomSheetLayout.dismissSheet();
         }
@@ -191,8 +167,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
     //清空购物车
     public void clearCart(){
         selectedList.clear();
-        //groupSelect.clear();
-        update(true);
+        update();
     }
 
     @Override
@@ -205,11 +180,22 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
                 clearCart();
                 break;
             case R.id.tvSubmit:
-                Toast.makeText(MenuActivity.this, "结算", Toast.LENGTH_SHORT).show();
+                submitOrder(selectedList);
                 break;
             default:
                 break;
         }
+    }
+
+    private void submitOrder(SparseArray<OrderItemBean> list) {//结算跳转到提交订单页面
+        int size = list.size();
+        MyApplication application = (MyApplication)getApplication();
+        for(int i = 0; i < size; i++) {
+            OrderItemBean item = selectedList.valueAt(i);
+            application.orderBean.orderItemBeanList.add(item);
+        }
+        startActivity(new Intent(MenuActivity.this, OrderActivity.class));
+        MenuActivity.this.finish();
     }
 
     private View createBottomSheetView(){
@@ -224,7 +210,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void showBottomSheet(){
-        if(bottomSheet==null){
+        if(bottomSheet == null){
             bottomSheet = createBottomSheetView();
         }
         if(bottomSheetLayout.isSheetShowing()){
@@ -235,6 +221,21 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
     }
+
+    /*@Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch(requestCode) {
+            case 1:
+                if (resultCode == RESULT_OK) {
+                    OrderItemBean oib = (OrderItemBean) data.getSerializableExtra("data_return");
+                    Log.d("-----------", oib.toString());
+                    add(oib);
+                }
+                break;
+            default:
+                break;
+        }
+    }*/
 
     public void playAnimation(int[] start_location){
         ImageView img = new ImageView(this);
@@ -337,7 +338,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
             }
 
             TextView text = new TextView(this);
-            text.setTextSize(30);
+            text.setTextSize(25);
             text.setPadding(40, 10, 40, 10);
             text.setId(typeItem.getTypeId());
             text.setTextColor(Color.WHITE);
@@ -369,11 +370,11 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
     public void updateBg(int selectedId,List<TextView> tvList){
         for (TextView tv : tvList) {
             if (tv.getId() == selectedId) {
-                tv.setBackgroundColor(getResources().getColor(R.color.white));
-                tv.setTextColor(getResources().getColor(R.color.colorPrimary));
-            } else {
                 tv.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                 tv.setTextColor(getResources().getColor(R.color.white));
+            } else {
+                tv.setBackgroundColor(getResources().getColor(R.color.white));
+                tv.setTextColor(getResources().getColor(R.color.colorPrimary));
             }
         }
     }
@@ -404,16 +405,13 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
 
 
     class TypeCallBack implements HttpCallback {
-
         @Override
         public void onSuccess(final Object data) {
             // 当前的 Runnable 在 UI 线程执行
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-
                     typeList = (List<TypeBean>) data;
-
                     initTopTypes();
                 }
             });

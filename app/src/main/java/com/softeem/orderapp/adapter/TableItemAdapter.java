@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.softeem.orderapp.R;
+import com.softeem.orderapp.bean.TableBean;
 
 import java.util.List;
 
@@ -17,17 +18,17 @@ import java.util.List;
 
 public class TableItemAdapter extends BaseAdapter {
     //数据来源
-    private List<Integer> data;
+    private List<TableBean> data;
     private Context context;
     private LayoutInflater inflater;
 
-    public TableItemAdapter(List<Integer> data, Context context) {
+    public TableItemAdapter(List<TableBean> data, Context context) {
         this.data = data;
         this.context = context;
         inflater = LayoutInflater.from(context);
     }
 
-    public void setData(List<Integer> data) {
+    public void setData(List<TableBean> data) {
         this.data = data;
     }
 
@@ -48,7 +49,7 @@ public class TableItemAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        int itemBean = data.get(position);
+        TableBean itemBean = data.get(position);
 
         // 创建 View
         ViewHolder holder;
@@ -63,7 +64,7 @@ public class TableItemAdapter extends BaseAdapter {
         }
 
         // 设置数据
-        holder.tableNumberTextView.setText(itemBean + "");
+        holder.tableNumberTextView.setText(itemBean.getSite() + "");
 
         return convertView;
     }

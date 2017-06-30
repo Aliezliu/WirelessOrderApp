@@ -20,12 +20,18 @@ public class ServerUrl {
     public static String PUT_ORDER = SERVER_PATH + "/CreateOrder";
 
     //更新桌子信息接口
-    public static String UPDATE_TABLE_STATE = SERVER_PATH + "/tableController/updateTable.action";
+    /*public static String UPDATE_TABLE_STATE = SERVER_PATH + "/tableController/updateTable.action";*/
 
     //获取所有桌子编号接口
     public static String GET_ALL_TABLE = SERVER_PATH + "/Tables";
     //获取所有桌子信息的接口
-    public static String GET_ALL_TABLE_NUMBERS = SERVER_PATH + "/tableController//listTableNumbers.action";
+    public static String GET_ALL_TABLE_NUMBERS = SERVER_PATH + "/Tables";
 
     public static String GET_Check_BY_OrderID = SERVER_PATH + "/Check?orderId=";
+
+    public static String GET_PASSWORD_BY_USERNAME = SERVER_PATH + "/Account?username=";
+
+    public static String GET_ALL_SHOUCANGBEAN = SERVER_PATH + "/Shoucangs";
+
+    public static String DELETE_SHOUCANGBEAN = SERVER_PATH + "/DeleteShoucang";
 }

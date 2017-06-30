@@ -1,18 +1,17 @@
 package com.softeem.orderapp.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by Edward on 2017/6/22.
  */
 
-public class OrderItemBean {
+public class OrderItemBean implements Serializable{
     public String state = "未下单";
     public int count;
     public double itemTotalPrice;
     public double itemCutPrice;
     public MenuBean menuBean;
-
-
-
 
 
     public String getState() {

@@ -12,21 +12,16 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.softeem.orderapp.R;
 import com.softeem.orderapp.bean.TableBean;
-import com.softeem.orderapp.constant.ServerUrl;
-import com.softeem.orderapp.http.HttpCallback;
-import com.softeem.orderapp.http.HttpUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener, View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     private GridView mainMenuGridView;
     private List<Map<String, Object>> data_list;
     private SimpleAdapter sim_adapter;
@@ -37,8 +32,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private String[] iconName = {"点餐", "提交订单", "查看订单", "查台",
             "结算", "收藏夹", "用户管理", "设置"};
 
-    private TextView personNumberTextView;
-    private TextView tableNumberTextView;
+    //private TextView personNumberTextView;
+    private TextView tableNumberTextView, tableMessageTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +41,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         initView();
         initData();
 
-
         //初始化桌子信息
-       // initTable();
+        initTable();
 
     }
 
@@ -77,8 +71,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
         //设置对应的桌子编号
         t.setId(tableNumber);
+        t.setPersonNum(4);
+        t.setSmoke(false);
+        t.setShape("长方形");
         topTableNumberTextView.setText("当前桌号: " + tableNumber);
-
 
         //显示对话框
         AlertDialog dialog = null;
@@ -89,12 +85,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         //设置自定义 View
         builder.setView(view);
 
-        view.findViewById(R.id.minus_TextView).setOnClickListener(this);
-        view.findViewById(R.id.plus_TextView).setOnClickListener(this);
-        personNumberTextView = (TextView) view.findViewById(R.id.person_number_TextView);
+        //personNumberTextView = (TextView) view.findViewById(R.id.person_number_TextView);
         tableNumberTextView = (TextView) view.findViewById(R.id.table_id_TextView);
         tableNumberTextView.setText("桌号:   " + tableNumber);
-
+        tableMessageTV = (TextView) view.findViewById(R.id.tableMessage);
+        tableMessageTV.setText("餐桌状态："+(t.isStatus()==true?"有人":"无人")+"\n"
+                +"座位数量："+t.getPersonNum()+"\n"
+                +"可否抽烟："+(t.isSmoke()==true?"可以":"不可以")+"\n"
+                +"餐桌形状："+t.getShape());
 
         builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
             @Override
@@ -109,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                int count = Integer.parseInt(personNumberTextView.getText().toString());
+                /*int count = Integer.parseInt(personNumberTextView.getText().toString());
                 t.setPersonNum(count);
 
                 //提交到服务器
@@ -124,10 +122,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                             @Override
                             public void run() {
                                 Toast.makeText(MainActivity.this, response.toString(), Toast.LENGTH_SHORT).show();
-
                                 //当前桌子的使用状态为正在使用
                                 data.edit().putBoolean("table_state", true).commit();
-
                             }
                         });
                     }
@@ -144,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                             }
                         });
                     }
-                });
+                });*/
 
 
                 dialog.dismiss();
@@ -217,12 +213,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             case 6:
                 i = new Intent(MainActivity.this, LoginActivity.class);
                 break;
+            case 7:
+                i = new Intent(MainActivity.this, SwitchActivity.class);
+                break;
         }
 
         startActivity(i);
     }
 
-    @Override
+    /*@Override
     public void onClick(View v) {
 
         switch (v.getId()) {
@@ -240,5 +239,5 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 break;
 
         }
-    }
+    }*/
 }

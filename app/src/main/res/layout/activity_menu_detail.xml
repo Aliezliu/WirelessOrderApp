@@ -25,31 +25,31 @@
         android:orientation="horizontal">
 
         <RelativeLayout
-            android:layout_weight="2"
+            android:layout_weight="5"
             android:layout_width="0dp"
             android:layout_height="match_parent">
 
             <ImageView
                 android:id="@+id/detail_pic_ImageView"
-                android:layout_marginTop="1dp"
+
                 android:layout_width="match_parent"
                 android:layout_height="230dp"
                 android:scaleType="fitXY"
-                android:paddingLeft="50dp"
-                android:paddingRight="50dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="5dp"
                 android:src="@mipmap/menu_test"/>
 
             <Button
                 android:layout_below="@id/detail_pic_ImageView"
                 android:text="返回"
-                android:layout_marginLeft="50dp"
+                android:layout_marginLeft="25dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/back_Button"/>
 
             <Button
                 android:text="加入订单"
-                android:layout_marginRight="50dp"
+                android:layout_marginRight="25dp"
                 android:layout_marginLeft="20dp"
                 android:layout_alignParentRight="true"
                 android:layout_alignBottom="@id/back_Button"
@@ -61,7 +61,7 @@
 
         <LinearLayout
             android:orientation="vertical"
-            android:layout_weight="1"
+            android:layout_weight="3"
             android:layout_width="0dp"
             android:layout_height="match_parent">
 
@@ -138,10 +138,9 @@
                 android:padding="1dp"
                 android:id="@+id/menu_introduce_TextView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
                 android:text="是热菜菜谱之一。以五花肉为制作主料，最好选用肥瘦相间的三层肉来做。红烧肉的烹饪技巧以砂锅为主，肥瘦相间，香甜松软，入口即化。红烧肉在我国各地流传甚广，是一道著名的大众菜肴。"/>
         </LinearLayout>
-
     </LinearLayout>
 
 </LinearLayout>

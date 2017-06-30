@@ -27,7 +27,7 @@
     <Button
         android:id="@+id/ok_Button"
         android:layout_width="match_parent"
-        android:layout_height="70sp"
+        android:layout_height="60sp"
         android:layout_below="@id/table_GridView"
         android:text="确定"
         android:textAlignment="center"

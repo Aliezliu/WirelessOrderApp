@@ -14,15 +14,6 @@
         android:background="@color/colorPrimaryDark"/>
 
     <TextView
-        android:layout_margin="10dp"
-        android:paddingTop="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="状态: 正在使用"
-        android:textSize="25sp" />
-
-    <TextView
         android:id="@+id/table_id_TextView"
         android:layout_margin="10dp"
         android:layout_width="wrap_content"
@@ -31,41 +22,16 @@
         android:text="桌号: 8"
         android:textSize="28sp" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/tableMessage"
+        android:text="餐桌状态：\n...\n...."
+        android:layout_margin="10dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:textAlignment="center"
+        android:textStyle="normal"
+        android:textSize="24sp"/>
 
-        <TextView
-            android:id="@+id/minus_TextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:padding="10dp"
-            android:text="&lt;"
-            android:textColor="#9b7611"
-            android:textSize="28sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/person_number_TextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="4"
-            android:textSize="28sp" />
-
-        <TextView
-            android:id="@+id/plus_TextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:padding="10dp"
-            android:text="&gt;"
-            android:textColor="#9b7611"
-            android:textSize="28sp"
-            android:textStyle="bold" />
-    </LinearLayout>
 </LinearLayout>

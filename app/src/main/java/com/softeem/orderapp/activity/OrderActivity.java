@@ -3,6 +3,7 @@ package com.softeem.orderapp.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -98,12 +99,10 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
         }
         realPrice = totalPrice - cutPrice;
         DecimalFormat df = new DecimalFormat("#.0");
-        df.format(totalPrice);
-        df.format(cutPrice);
-        df.format(realPrice);
-        totalPriceTextView.setText("总价:" + String.valueOf(totalPrice));
-        cutPriceTextView.setText("优惠:  " + String.valueOf(cutPrice));
-        realPriceTextView.setText("实价:" + String.valueOf(realPrice));
+
+        totalPriceTextView.setText("总价:" + String.valueOf(df.format(totalPrice)));
+        cutPriceTextView.setText("优惠:  " + String.valueOf(df.format(cutPrice)));
+        realPriceTextView.setText("实价:" + String.valueOf(df.format(realPrice)));
     }
 
     @Override
@@ -121,11 +120,12 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
                 // 提交 json 文本到服务器
                 new HttpUtils().postData(ServerUrl.PUT_ORDER,json,new HttpCallback(){
                     @Override
-                    public void onSuccess(Object data) {
+                    public void onSuccess(final Object data) {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 Toast.makeText(OrderActivity.this,"订单提交成功",Toast.LENGTH_SHORT).show();
+                                Log.d("/////////", data.toString());
                                 putOrderButton.setClickable(false);
                             }
                         });
@@ -142,11 +142,14 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
 
                     }
                 });
+                putOrderButton.setEnabled(false);
                 break;
             case R.id.add_order_Button:
+                putOrderButton.setEnabled(true);
                 startActivity(new Intent(OrderActivity.this, MenuActivity.class));
                 break;
             case R.id.pay_order_Button:
+                startActivity(new Intent(OrderActivity.this, PayActivity.class));
                 break;
             case R.id.order_back_Button:
                 OrderActivity.this.finish();

@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.softeem.orderapp.MyApplication;
 import com.softeem.orderapp.R;
 import com.softeem.orderapp.activity.MenuActivity;
 import com.softeem.orderapp.bean.MenuBean;
@@ -29,7 +28,7 @@ public class MenuGridViewAdapter extends BaseAdapter {
     // inflater:创建View
     private LayoutInflater inflater;
 
-    private MenuBean menuBean;
+    /*private MenuBean menuBean;*/
     public MenuGridViewAdapter(List<MenuBean> data,LayoutInflater inflater,Context context){
         this.data = data;
         this.inflater = inflater;
@@ -59,84 +58,70 @@ public class MenuGridViewAdapter extends BaseAdapter {
     // getView 提供 View 对象,每一个 View 对应一个 MenuBean
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // 获取当前 Item 对应的数据
-        menuBean = data.get(position);
-
         // 缓存: 减少 View 的创建和 findViewById 的操作
-        ViewHolder holder;
-
-        if(convertView==null){
+        ViewHolder holder = null;
+        if(convertView == null){
             //创建 Item 对应的 View 对象
-            convertView= inflater.inflate(R.layout.menu_item,null);
-
-            holder=new ViewHolder();
-            // 从 convertView 中获取每一个控件,将控件缓存到 ViewHolder 中
-            holder.picIV=(ImageView)convertView.findViewById(R.id.menu_item_ImageView);
-            holder.priceTV=(TextView)convertView.findViewById(R.id.menu_item_price_TextView);
-            holder.nameTV = (TextView)convertView.findViewById(R.id.menu_item_name_TextView);
-            holder.addTV = (TextView)convertView.findViewById(R.id.menu_item_add_TextView);
-
+            convertView = inflater.inflate(R.layout.menu_item, null);
+            holder = new ViewHolder(convertView);
             //将 holder 存入 View 中
             convertView.setTag(holder);
         }else{
             //直接 从 View 中获取 holder
-            holder=(ViewHolder) convertView.getTag();
+            holder = (ViewHolder) convertView.getTag();
         }
-
-        // 动态给定数据
-        holder.nameTV.setText(menuBean.getName());
-        holder.priceTV.setText("价格:" + menuBean.getPrice() + "    折扣价:" + (menuBean.getPrice()-menuBean.getDiscount()));
-        holder.addTV.setOnClickListener(new View.OnClickListener() {
-            MenuActivity activity = (MenuActivity)context;
-            @Override
-            public void onClick(View v) {
-                OrderItemBean i = new OrderItemBean();
-                i.menuBean = menuBean;
-                i.count = 1;
-                i.itemTotalPrice = menuBean.getPrice();
-                i.itemCutPrice = menuBean.getDiscount();
-                // 添加到临时订单中
-                MyApplication application = (MyApplication) activity.getApplication();
-                List<OrderItemBean> list = application.orderBean.orderItemBeanList;
-                boolean flag = true;
-                for (OrderItemBean oib : list) {
-                    if (oib.menuBean.getId() == i.menuBean.getId()) {
-                        oib.count += i.count;
-                        oib.itemTotalPrice += i.itemTotalPrice;
-                        oib.itemCutPrice += i.itemCutPrice;
-                        flag = false;
-                    }
-                }
-                if(flag)
-                    application.orderBean.orderItemBeanList.add(i);
-                activity.add(i, false);
-                /*TextView tvCount = (TextView)activity.findViewById(R.id.tvCount);
-                int count = Integer.valueOf(tvCount.getText().toString());
-                count++;
-                tvCount.setVisibility(View.VISIBLE);
-                tvCount.setText(String.valueOf(count));*/
-                int[] loc = new int[2];
-                v.getLocationInWindow(loc);
-
-                activity.playAnimation(loc);
-                //Toast.makeText(context, "添加成功！", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        // ImageView加载网络图片
-        Glide
-                .with(context)
-                .load(menuBean.getUrl())
-                .centerCrop()
-                .into(holder.picIV);
-
+        // 获取当前 Item 对应的数据
+        MenuBean menuBean = data.get(position);
+        holder.bindData(menuBean);
         return convertView;
     }
 
-    class ViewHolder{
+    class ViewHolder implements View.OnClickListener{
+        MenuBean menuBean;
         ImageView picIV;
         TextView priceTV;
         TextView nameTV;
         TextView addTV;
+        public ViewHolder(View itemView) {
+            picIV = (ImageView) itemView.findViewById(R.id.menu_item_ImageView);
+            priceTV=(TextView) itemView.findViewById(R.id.menu_item_price_TextView);
+            nameTV = (TextView) itemView.findViewById(R.id.menu_item_name_TextView);
+            addTV = (TextView) itemView.findViewById(R.id.menu_item_add_TextView);
+            addTV.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            MenuActivity activity = (MenuActivity)context;
+            switch (v.getId()) {
+                case R.id.menu_item_add_TextView:
+                    OrderItemBean i = new OrderItemBean();
+                    i.menuBean = menuBean;
+                    i.count = 1;
+                    i.itemTotalPrice = menuBean.getPrice();
+                    i.itemCutPrice = menuBean.getDiscount();
+                    // 添加到临时订单中
+
+                    activity.add(i);
+                    int[] loc = new int[2];
+                    v.getLocationInWindow(loc);
+
+                    activity.playAnimation(loc);
+                    break;
+            }
+        }
+
+        public void bindData(MenuBean menuBean) {
+            this.menuBean = menuBean;
+            nameTV.setText(menuBean.getName());
+            priceTV.setText("价格:" + menuBean.getPrice() + "    折扣价:" + (menuBean.getPrice()-menuBean.getDiscount()));
+            // ImageView加载网络图片
+            Glide
+                    .with(context)
+                    .load(menuBean.getUrl())
+                    .centerCrop()
+                    .into(picIV);
+
+        }
     }
 }

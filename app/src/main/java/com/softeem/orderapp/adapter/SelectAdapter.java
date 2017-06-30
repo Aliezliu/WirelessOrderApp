@@ -66,10 +66,10 @@ public class SelectAdapter extends RecyclerView.Adapter<SelectAdapter.ViewHolder
         public void onClick(View v) {
             switch (v.getId()){
                 case R.id.tvAdd:
-                    activity.add(item, true);
+                    activity.add(item);
                     break;
                 case R.id.tvMinus:
-                    activity.remove(item, true);
+                    activity.remove(item);
                     break;
                 default:
                     break;

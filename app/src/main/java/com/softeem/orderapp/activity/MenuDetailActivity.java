@@ -94,6 +94,7 @@ public class MenuDetailActivity extends AppCompatActivity {
                 // 添加订单:
                 //(1)封装 OrderItem
                 addOrderItem(menuBean);
+                //MenuActivity.add(menuBean);
                 Toast.makeText(MenuDetailActivity.this, "加入成功", Toast.LENGTH_SHORT).show();
 
                 //关闭当前 Activity
@@ -132,7 +133,7 @@ public class MenuDetailActivity extends AppCompatActivity {
         if (menuBean == null)
             return;
 
-        menuNameTextView.setText("菜谱名称:    " + menuBean.getName());
+        menuNameTextView.setText(menuBean.getName());
 
         menuPriceTextView.setText("价格:   " + menuBean.getPrice() + "");
         menuCutPriceTextView.setText("折后价格:    " + (menuBean.getPrice()-menuBean.getDiscount()) + "");
@@ -164,4 +165,19 @@ public class MenuDetailActivity extends AppCompatActivity {
             }
         });
     }
+
+    /*@Override
+    public void onBackPressed() {
+        Intent intent = new Intent();
+        OrderItemBean item = new OrderItemBean();
+        item.menuBean = menuBean;
+        int count = Integer.parseInt(countTextView.getText().toString());
+        item.count = count;
+        item.itemTotalPrice = count * menuBean.getPrice();
+        item.itemCutPrice = count * menuBean.getDiscount();
+        intent.putExtra("data_return", item);
+        setResult(RESULT_OK, intent);
+        startActivity(intent);
+        finish();
+    }*/
 }

@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.softeem.orderapp.R;
 import com.softeem.orderapp.utils.Config;
@@ -82,7 +81,7 @@ public class LoginActivity extends Activity {
                      SpUtils.setLong(LoginActivity.this,"time", System.currentTimeMillis());
                      handler.sendEmptyMessage(DO_LOGIN);
                 } else {
-                    Toast.makeText(LoginActivity.this, "用户名或密码错误！", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(LoginActivity.this, "用户名或密码错误！", Toast.LENGTH_SHORT).show();
                 }
             }
         });

@@ -28,8 +28,8 @@ public class PayActivity extends AppCompatActivity {
     private Button cancel;
     private Button viewDetail;
     private OrderBean orderBean;
-
     private String orderInputStr = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,7 +106,7 @@ public class PayActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         code.setVisibility(View.VISIBLE);
-                        viewDetail.setVisibility(View.VISIBLE);
+                       // viewDetail.setVisibility(View.VISIBLE);
                         Log.d("Tips","请扫描二维码支付");
                         Toast.makeText(PayActivity.this,"请扫描二维码支付",Toast.LENGTH_SHORT).show();
                     }
